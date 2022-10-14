@@ -1,0 +1,94 @@
+body {
+  user-select: none;
+}
+
+.container {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.btnContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2;
+}
+
+.button {
+  display: flex;
+  width: 100px;
+  height: 80px;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  font-size: 27px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 20px;
+}
+
+
+.lightContainer {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+}
+
+.light {
+  position: absolute;
+  min-width: 15px;
+  max-width: 15px;
+  min-height: 15px;
+  max-height: 15px;
+  border-radius: 50%;
+  filter: brightness(30%);
+}
+
+.light0 {
+  top: 34%;
+  left: 47%;
+  background-color: rgb(96, 25, 237);
+}
+
+.light1 {
+  top: 44%;
+  left: 50%;
+  background-color: rgb(218, 15, 15);
+}
+
+.light2 {
+  top: 50%;
+  left: 41%;
+  background-color: rgb(46, 228, 14);
+}
+
+.light3 {
+  top: 64%;
+  left: 61%;
+  background-color: rgb(114, 115, 45);
+}
+
+.light4 {
+  top: 60%;
+  left: 37%;
+  background-color: rgb(144, 6, 139);
+}
+
+.lightOn {
+  filter: brightness(100%);
+}
