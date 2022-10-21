@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="hw2.css" />
+    <title>HW2 HTML Input & Vector3 API</title>
+</head>
+
+<body>
+    <div class="subject">
+        <p>HW2 HTML Input & Vector3 API</p>
+    </div>
+    <div class="vVector">
+        <h2>V</h2>
+        <hr size="0.5px" align="center" width="100%">
+        <div class="Vx">
+            <label for="X0">X:</label>
+            <input type="Vx" id="Vx" placeholder="X">
+        </div>
+        <br>
+        <div class="Vy">
+            <label for="Y0">Y:</label>
+            <input type="Vy" id="Vy" placeholder="Y">
+        </div>
+        <br>
+        <div class="Vz">
+            <label for="Z0">Z:</label>
+            <input type="Vz" id="Vz" placeholder="Z">
+        </div>
+    </div>
+    <br>
+    </div>
+    <div class="wVector">
+        <h2>W</h2>
+        <hr size="0.5px" align="center" width="100%">
+        <div class="Wx">
+            <label for="X1">X:</label>
+            <input type="Wx" id="Wx" placeholder="X">
+        </div>
+        <br>
+        <div class="Wy">
+            <label for="Y1">Y:</label>
+            <input type="Wy" id="Wy" placeholder="Y">
+        </div>
+        <br>
+        <div class="Wz">
+            <label for="Z1">Z:</label>
+            <input type="Wz" id="Wz" placeholder="Z">
+        </div>
+    </div>
+    <div class="vwVector">
+        <h2>inner product</h2>
+        <hr size="0.5px" align="center" width="100%">
+        <label for="X0">V·W</label>
+        <input type="dot" id="dot">
+        <br>
+        <div class="VclossW">
+            <h2>V × W(inner product)</h2>
+            <hr size="0.5px" align="center" width="100%">
+            <div>
+                <label for="X2">X:</label>
+                <input type="X2" id="X2">
+            </div>
+            <br>
+            <div>
+                <label for="Y2">Y:</label>
+                <input type="Y2" id="Y2">
+            </div>
+            <br>
+            <div>
+                <label for="Z2">Z:</label>
+                <input type="Z2" id="Z2">
+            </div>
+        </div>
+    </div>
+    <button class="button" id="button"> 執行 </button>
+
+</body>
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="hw2.js"></script>
+
+</html>

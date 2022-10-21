@@ -1,0 +1,47 @@
+.subject{
+    text-align: center;
+    vertical-align: top;
+    font-family:fantasy;
+
+}
+.vVector{
+    background-color: rgb(195, 118, 18);
+    width: 180px;
+    height: 165px;
+    font-family:fantasy;
+    border-radius: 5%;
+}
+.wVector{
+    background-color: rgb(24, 228, 243);
+    width: 180px;
+    height: 165px;
+    font-family:fantasy;
+    border-radius: 5%;
+}
+.vwVector{
+    background-color: rgb(170, 145, 22);
+    width: 240px;
+    height: 280px;
+    font-family:fantasy;
+    border-radius: 5%;
+    position: absolute;
+    top: 10%;
+    left: 30%;
+}
+.button{
+    display: flex;
+    width: 100px;
+    height: 80px;
+    color: rgb(9, 244, 240);
+    background-color: rgb(122, 20, 181);
+    border-radius: 50%;
+    text-align: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+}
