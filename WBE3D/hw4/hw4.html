@@ -1,0 +1,367 @@
+<html>
+<style type="text/css">
+    #container {
+        width: 65%;
+        height: 90%;
+        float: left;
+        background-color: rgb(94, 106, 112);
+        margin: 10px;
+    }
+
+    p {
+        margin: 10px;
+        text-align: justify;
+    }
+
+    #toolbar {
+        width: 30% height: 90% float: right;
+    }
+</style>
+<h1 style="text-align:center"> I4B22 HW4 Patio Design </h1>
+<left>
+    <div id="container">
+</left>
+</div>
+
+<div style="float:left; margin-left: 10px; width:32vw;">
+
+    <div>
+
+        </span>
+        <br>
+    </div>
+    <toolbar>
+        <br>
+        <div style='background-color:rgb(217, 210, 217)'>
+            Color Selector:
+            <br>
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" id='table' name="furn" value='Table' checked>Table
+                </label>
+                <label class="radio">
+                    <input type="radio" id='chair' name="furn" value='Chair'>Chair
+                </label>
+            </div>
+        </div>
+        <br>
+        <button id='clear' style="width:45%">Clear</button>
+        <button id='save' style="width:45%">Save</button>
+        <button id='restore' style="width:45%">Restore</button>
+    </toolbar>
+</div>
+
+<left>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script>
+        $('#radius').change(function () {
+            $('#radiusPrint').text($(this).val());
+        });
+
+        var camera, scene, renderer, controls;
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+        var pickplane;
+        var cyl;
+        var spheres = [];
+        var chairs = [];
+        var tables = [];
+
+        var count = 0;
+        var furniture = 0;
+
+        init();
+        animate();
+
+        $('#clear').click(function () {
+
+            spheres.forEach(function (sphere, boxTop, boxLeg1, boxLeg2) {
+                scene.remove(sphere);
+                scene.remove(boxTop);
+                scene.remove(boxLeg1);
+                scene.remove(boxLeg2);
+            });
+            spheres = [];
+            chairs = [];
+            tables = [];
+        });
+
+        $('#save').click(function () {
+
+            var stateTables = [];
+            var stateChairs = [];
+
+            tables.forEach(function (sphere) {
+                stateTables.push(sphere.name);
+            });
+            chairs.forEach(function (sphere) {
+                stateChairs.push(sphere.name);
+            });
+
+            localStorage.setItem('stateCha', JSON.stringify(stateChairs));
+            localStorage.setItem('stateStr', JSON.stringify(stateTables));
+
+
+        });
+
+        $('#restore').click(function () {
+
+
+            spheres.forEach(function (sphere, boxTop, boxLeg1, boxLeg2) {
+                scene.remove(sphere);
+                scene.remove(boxTop);
+                scene.remove(boxLeg1);
+                scene.remove(boxLeg2);
+            });
+            spheres = [];
+            chairs = [];
+            tables = [];
+
+
+            var states = JSON.parse(localStorage.getItem('stateStr'));
+
+
+            states.forEach(function (stateStr) {
+                console.log(stateStr);
+                var state = JSON.parse(stateStr);
+                buildSphere(state.rad, new THREE.Vector3(state.pos[0], 0, state.pos[1]));
+            });
+
+            var chairs = JSON.parse(localStorage.getItem('stateCha'));
+
+            chairs.forEach(function (stateCha) {
+                //console.log(stateStr);
+                var state = JSON.parse(stateCha);
+                buildChair(state.rad, new THREE.Vector3(state.pos[0], 0, state.pos[1]));
+            });
+
+        });
+
+
+
+        $('#table').click(function () {
+
+            furniture = 0;
+            //alert(furniture);
+        });
+
+        $('#chair').click(function () {
+
+            furniture = 1;
+            //alert(furniture);
+        });
+
+
+        function buildSphere(rad, pos) {
+
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(rad, 10, 10), new THREE.MeshNormalMaterial());
+
+            var woodTex = loader.load("WBE3D/hw4/photo/wood01.jpg");
+            var mat = new THREE.MeshBasicMaterial({
+                map: woodTex
+            });
+            var boxTop = new THREE.Mesh(new THREE.BoxGeometry(50, 10, 100), mat);
+            var boxLeg1 = new THREE.Mesh(new THREE.BoxGeometry(50, 30, 10), mat);
+            var boxLeg2 = new THREE.Mesh(new THREE.BoxGeometry(50, 30, 10), mat);
+
+
+            boxTop.position.set(pos.x, 25, pos.z);
+            boxLeg1.position.set(pos.x, 15, pos.z - 45);
+            boxLeg2.position.set(pos.x, 15, pos.z + 45);
+
+
+            //scene.add(sphere);
+            scene.add(boxTop, boxLeg1, boxLeg2);
+            var prop = {
+                rad: rad,
+                pos: [pos.x, pos.z]
+            };
+            //alert(pos.x);
+            //alert(pos.z);
+            //console.log(prop);
+            sphere.name = JSON.stringify(prop);
+            boxTop.name = JSON.stringify(prop);
+            boxLeg1.name = JSON.stringify(prop);
+            boxLeg2.name = JSON.stringify(prop);
+
+            //console.log(sphere.name);
+            //alert(boxTop.name);
+            //alert(boxLeg1.name);
+            //alert(boxLeg12.name);
+
+            spheres.push(boxTop, boxLeg1, boxLeg2);
+            sphere.position.copy(pos);
+            tables.push(boxTop, boxLeg1, boxLeg2);
+
+            //boxTop.position.copy(pos);
+            //boxLeg1.position.copy(pos);
+            //boxLeg2.position.copy(pos);
+
+        }
+
+        function buildChair(rad, pos) {
+
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(rad, 10, 10), new THREE.MeshNormalMaterial());
+
+            var woodTex = loader.load("WBE3D/hw4/photo/grass.jpg");
+            var mat = new THREE.MeshBasicMaterial({
+                map: woodTex
+            });
+            var boxTop = new THREE.Mesh(new THREE.BoxGeometry(20, 2.5, 22.5), mat);
+            var boxLeg1 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 15, 22.5), mat);
+            var boxLeg2 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 35, 22.5), mat);
+
+
+            boxTop.position.set(pos.x, 13.5, pos.z);
+            boxLeg1.position.set((pos.x - 9), 7.5, pos.z);
+            boxLeg2.position.set((pos.x + 9), 17.5, pos.z);
+
+
+            //scene.add(sphere);
+            scene.add(boxTop, boxLeg1, boxLeg2);
+            var prop = {
+                rad: rad,
+                pos: [pos.x, pos.z]
+            };
+            //alert(pos.x);
+            //alert(pos.z);
+            //console.log(prop);
+            sphere.name = JSON.stringify(prop);
+            boxTop.name = JSON.stringify(prop);
+            boxLeg1.name = JSON.stringify(prop);
+            boxLeg2.name = JSON.stringify(prop);
+
+            console.log(sphere.name);
+            //alert(boxTop.name);
+            //alert(boxLeg1.name);
+            //alert(boxLeg12.name);
+
+            spheres.push(boxTop, boxLeg1, boxLeg2);
+            sphere.position.copy(pos);
+            chairs.push(boxTop, boxLeg1, boxLeg2);
+
+            //boxTop.position.copy(pos);
+            //boxLeg1.position.copy(pos);
+            //boxLeg2.position.copy(pos);
+
+        }
+
+
+        function init() {
+
+            var ww = $("#container").innerWidth();
+            var hh = $("#container").innerHeight();
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(ww, hh);
+            renderer.setClearColor(0x888888);
+            $("#container").append(renderer.domElement);
+
+            var woodTex = new THREE.TextureLoader().load(
+                "hw4/grass.jpg"
+            );
+            var mat = new THREE.MeshBasicMaterial({
+                map: woodTex
+            });
+            var floor = new THREE.Mesh(new THREE.BoxGeometry(300, 5, 300), mat);
+            floor.position.set(0, -1, 0);
+
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(50, ww / hh, 1, 1000);
+            camera.position.y = 300;
+            camera.position.z = 200;
+            scene.add(camera);
+
+            var cyl_geom = new THREE.RingGeometry(5, 10, 32);
+            var cyl_mat = new THREE.MeshBasicMaterial({
+                color: 0xff1234,
+            });
+            cyl = new THREE.Mesh(cyl_geom, cyl_mat);
+            cyl.rotation.x = -Math.PI / 2;
+            cyl.position.set(-20, 0, 20);
+            scene.add(cyl);
+
+            pickplane = new THREE.Mesh(new THREE.PlaneGeometry(200, 200),
+                new THREE.MeshBasicMaterial({
+                    color: 0xff1234
+                }));
+            pickplane.rotation.x = -Math.PI / 2;
+            scene.add(pickplane);
+            pickplane.material.visible = false;
+
+            var gridXZ = new THREE.GridHelper(300, 40, 'red', 'white');
+            //var fl = floor();
+            scene.add(gridXZ, floor);
+            //scene.add(f1);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('mousemove', onDocumentMouseMove, false);
+            window.addEventListener('mousedown', onDocumentMouseDown, false);
+        }
+
+        function onWindowResize() {
+            var ww = $("#container").innerWidth() * 1.5;
+            var hh = $("#container").innerHeight() * 1.5;
+
+            camera.aspect = ww / hh;
+            camera.updateProjectionMatrix();
+            renderer.setSize(ww, hh);
+        }
+
+        function onDocumentMouseMove(event) {
+
+            event.preventDefault();
+
+            var viewportPos = $('#container').get(0).getBoundingClientRect();
+            mouse.x = ((event.clientX - viewportPos.left) / $('#container').innerWidth()) * 2 - 1;
+            mouse.y = -((event.clientY - viewportPos.top) / $('#container').innerHeight()) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObject(pickplane);
+            if (intersects.length > 0) {
+                cyl.position.copy(intersects[0].point);
+                cyl.position.y = 2;
+            }
+        }
+
+        function onDocumentMouseDown(event) {
+
+            event.preventDefault();
+
+            var viewportPos = $('#container').get(0).getBoundingClientRect();
+            mouse.x = ((event.clientX - viewportPos.left) / $('#container').innerWidth()) * 2 - 1;
+            mouse.y = -((event.clientY - viewportPos.top) / $('#container').innerHeight()) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObject(pickplane);
+            if (intersects.length > 0) {
+                cyl.position.copy(intersects[0].point);
+                if (furniture) {
+                    buildChair(10, intersects[0].point);
+                } else {
+                    buildSphere(10, intersects[0].point);
+                }
+
+                count++;
+            }
+        }
+
+        function animate() {
+
+            controls.update();
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+            renderer.render(scene, camera);
+        }
+    </script>
+</left>
+
+</html>

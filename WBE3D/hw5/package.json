@@ -1,0 +1,17 @@
+{
+  "name": "hw5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main-win.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main-win.js",
+    "build": "gcc main.cpp"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "shelljs": "^0.8.5"
+  }
+}
